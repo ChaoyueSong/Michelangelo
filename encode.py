@@ -40,8 +40,8 @@ def reconstruction(args, model, bounds=(-1.25, -1.25, -1.25, 1.25, 1.25, 1.25), 
     
     return 0
 
-def load_model(ckpt_path="third_partys/Michelangelo/checkpoints/shapevae-256.ckpt"):
-    model_config = OmegaConf.load("third_partys/Michelangelo/configs/shapevae-256.yaml")
+def load_model(ckpt_path="third_party/Michelangelo/checkpoints/aligned_shape_latents/shapevae-256.ckpt"):
+    model_config = OmegaConf.load("third_party/Michelangelo/configs/shapevae-256.yaml")
     if hasattr(model_config, "model"):
         model_config = model_config.model
 

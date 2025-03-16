@@ -7,7 +7,7 @@ import numpy as np
 from typing import Callable, Tuple, List, Union, Optional
 from skimage import measure
 
-from third_partys.Michelangelo.michelangelo.graphics.primitives import generate_dense_grid_points
+from third_party.Michelangelo.michelangelo.graphics.primitives import generate_dense_grid_points
 
 
 @torch.no_grad()

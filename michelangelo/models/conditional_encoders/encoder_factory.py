@@ -7,7 +7,7 @@ from torchvision import transforms
 from transformers import CLIPModel, CLIPTokenizer
 from collections import OrderedDict
 
-from third_partys.Michelangelo.michelangelo.data.transforms import RandomResize
+from third_party.Michelangelo.michelangelo.data.transforms import RandomResize
 
 
 class AbstractEncoder(nn.Module):

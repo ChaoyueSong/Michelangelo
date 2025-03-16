@@ -6,8 +6,8 @@ from typing import Optional
 from diffusers.models.embeddings import Timesteps
 import math
 
-from third_partys.Michelangelo.michelangelo.models.modules.transformer_blocks import MLP
-from third_partys.Michelangelo.michelangelo.models.modules.diffusion_transformer import UNetDiffusionTransformer
+from third_party.Michelangelo.michelangelo.models.modules.transformer_blocks import MLP
+from third_party.Michelangelo.michelangelo.models.modules.diffusion_transformer import UNetDiffusionTransformer
 
 
 class ConditionalASLUDTDenoiser(nn.Module):

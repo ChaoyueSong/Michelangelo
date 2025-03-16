@@ -9,7 +9,7 @@ import pytorch_lightning as pl
 from typing import Union
 from functools import partial
 
-from third_partys.Michelangelo.michelangelo.utils import instantiate_from_config
+from third_party.Michelangelo.michelangelo.utils import instantiate_from_config
 
 from .inference_utils import extract_geometry
 from .tsal_base import (
