@@ -6,7 +6,7 @@ import torch.nn as nn
 from typing import Optional
 import warnings
 
-from michelangelo.models.modules.checkpoint import checkpoint
+from third_partys.Michelangelo.michelangelo.models.modules.checkpoint import checkpoint
 
 
 def _trunc_normal_(tensor, mean, std, a, b):

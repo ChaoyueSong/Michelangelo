@@ -2,7 +2,6 @@
 
 import torch.nn as nn
 from typing import Tuple, List, Optional
-import pytorch_lightning as pl
 
 
 class Point2MeshOutput(object):
@@ -32,7 +31,7 @@ class AlignedMeshOutput(object):
         self.shape_image_similarity: Optional[float] = None
 
 
-class ShapeAsLatentPLModule(pl.LightningModule):
+class ShapeAsLatentPLModule(nn.Module):
     latent_shape: Tuple[int]
 
     def encode(self, surface, *args, **kwargs):
@@ -64,7 +63,7 @@ class ShapeAsLatentModule(nn.Module):
         raise NotImplementedError
 
 
-class AlignedShapeAsLatentPLModule(pl.LightningModule):
+class AlignedShapeAsLatentPLModule(nn.Module):
     latent_shape: Tuple[int]
 
     def set_shape_model_only(self):

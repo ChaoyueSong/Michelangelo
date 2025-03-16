@@ -5,24 +5,23 @@ from omegaconf import DictConfig
 
 import torch
 import torch.nn.functional as F
+from torch import nn
 from torch.optim import lr_scheduler
-import pytorch_lightning as pl
 from typing import Union
 from functools import partial
 
-from michelangelo.utils import instantiate_from_config
+from third_partys.Michelangelo.michelangelo.utils import instantiate_from_config
 
-from .inference_utils import extract_geometry
 from .tsal_base import (
     AlignedShapeAsLatentModule,
     ShapeAsLatentModule,
     Latent2MeshOutput,
     AlignedMeshOutput
 )
+from third_partys.Michelangelo.michelangelo.models.tsal.inference_utils import extract_geometry
+import trimesh
 
-
-class AlignedShapeAsLatentPLModule(pl.LightningModule):
-
+class AlignedShapeAsLatentPLModule(nn.Module):
     def __init__(self, *,
                  shape_module_cfg,
                  aligned_module_cfg,
@@ -47,10 +46,10 @@ class AlignedShapeAsLatentPLModule(pl.LightningModule):
         if ckpt_path is not None:
             self.init_from_ckpt(ckpt_path, ignore_keys=ignore_keys)
 
-        self.save_hyperparameters()
-
     def set_shape_model_only(self):
         self.model.set_shape_model_only()
+
+
 
     @property
     def latent_shape(self):
@@ -142,6 +141,48 @@ class AlignedShapeAsLatentPLModule(pl.LightningModule):
         )
 
         return shape_zq
+
+    def encode_latents(self, surface: torch.FloatTensor):
+
+        pc = surface[..., 0:3]
+        feats = surface[..., 3:6]
+
+        shape_embed, shape_latents = self.model.shape_model.encode_latents(
+            pc=pc, feats=feats
+        )
+        shape_embed = shape_embed.unsqueeze(1)
+        # assert shape_embed.shape[1] == 1 and shape_latents.shape[1] == 256
+        cat_latents = torch.cat([shape_embed, shape_latents], dim=1)
+
+        return cat_latents
+
+    def recon(self, surface):
+        cat_latents = self.encode_latents(surface)
+        shape_latents = cat_latents[:, 1:]
+        shape_zq, posterior = self.model.shape_model.encode_kl_embed(shape_latents)
+
+        # decoding
+        latents = self.model.shape_model.decode(shape_zq)
+        geometric_func = partial(self.model.shape_model.query_geometry, latents=latents)
+
+        # reconstruction
+        mesh_v_f, has_surface = extract_geometry(
+            geometric_func=geometric_func,
+            device=surface.device,
+            batch_size=surface.shape[0],
+            bounds=(-1.25, -1.25, -1.25, 1.25, 1.25, 1.25),
+            octree_depth=7,
+            num_chunks=10000,
+        )
+        recon_mesh = trimesh.Trimesh(mesh_v_f[0][0], mesh_v_f[0][1])
+
+        return recon_mesh
+
+
+    def to_shape_latents(self, latents):
+
+        shape_zq, posterior = self.model.shape_model.encode_kl_embed(latents, sample_posterior = False)
+        return self.model.shape_model.decode(shape_zq)
 
     def decode(self,
                z_q,

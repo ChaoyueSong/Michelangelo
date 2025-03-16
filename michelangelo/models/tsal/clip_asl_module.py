@@ -5,7 +5,7 @@ from torch import nn
 from einops import rearrange
 from transformers import CLIPModel
 
-from michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentModule
+from third_partys.Michelangelo.michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentModule
 
 
 class CLIPAlignedShapeAsLatentModule(AlignedShapeAsLatentModule):
@@ -16,13 +16,13 @@ class CLIPAlignedShapeAsLatentModule(AlignedShapeAsLatentModule):
 
         super().__init__()
 
-        self.clip_model: CLIPModel = CLIPModel.from_pretrained(clip_model_version)
-        for params in self.clip_model.parameters():
-            params.requires_grad = False
-
+        # self.clip_model: CLIPModel = CLIPModel.from_pretrained(clip_model_version)
+        # for params in self.clip_model.parameters():
+        #     params.requires_grad = False
+        self.clip_model = None
         self.shape_model = shape_model
-        self.shape_projection = nn.Parameter(torch.empty(self.shape_model.width, self.clip_model.projection_dim))
-        nn.init.normal_(self.shape_projection, std=self.clip_model.projection_dim ** -0.5)
+        self.shape_projection = nn.Parameter(torch.empty(self.shape_model.width, self.shape_model.width))
+        # nn.init.normal_(self.shape_projection, std=self.shape_model.width ** -0.5)
 
     def set_shape_model_only(self):
         self.clip_model = None
@@ -112,7 +112,7 @@ class CLIPAlignedShapeAsLatentModule(AlignedShapeAsLatentModule):
             "image_embed": image_embed,
             "text_embed": text_embed,
             "shape_embed": shape_embed,
-            "logit_scale": self.clip_model.logit_scale.exp()
+            # "logit_scale": self.clip_model.logit_scale.exp()
         }
 
         return embed_outputs, shape_latents
