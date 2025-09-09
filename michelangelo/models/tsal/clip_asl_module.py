@@ -5,7 +5,7 @@ from torch import nn
 from einops import rearrange
 from transformers import CLIPModel
 
-from third_party.Michelangelo.michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentModule
+from third_partys.Michelangelo.michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentModule
 
 
 class CLIPAlignedShapeAsLatentModule(AlignedShapeAsLatentModule):

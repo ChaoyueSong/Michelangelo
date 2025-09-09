@@ -19,9 +19,9 @@ from diffusers.schedulers import (
     DPMSolverMultistepScheduler
 )
 
-from third_party.Michelangelo.michelangelo.utils import instantiate_from_config
-from third_party.Michelangelo.michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentPLModule
-from third_party.Michelangelo.michelangelo.models.asl_diffusion.inference_utils import ddim_sample
+from third_partys.Michelangelo.michelangelo.utils import instantiate_from_config
+from third_partys.Michelangelo.michelangelo.models.tsal.tsal_base import AlignedShapeAsLatentPLModule
+from third_partys.Michelangelo.michelangelo.models.asl_diffusion.inference_utils import ddim_sample
 
 SchedulerType = Union[DDIMScheduler, KarrasVeScheduler, DPMSolverMultistepScheduler]
 

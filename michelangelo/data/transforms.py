@@ -12,7 +12,7 @@ from torchvision.transforms import InterpolationMode
 from torchvision.transforms.transforms import _interpolation_modes_from_int
 from typing import Sequence
 
-from third_party.miche.michelangelo.utils import instantiate_from_config
+from third_partys.miche.michelangelo.utils import instantiate_from_config
 
 
 def _uid_buffer_pick(buf_dict, rng):

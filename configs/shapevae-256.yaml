@@ -1,8 +1,8 @@
 model:
-  target: third_party.Michelangelo.michelangelo.models.tsal.asl_pl_module.AlignedShapeAsLatentPLModule
+  target: third_partys.Michelangelo.michelangelo.models.tsal.asl_pl_module.AlignedShapeAsLatentPLModule
   params:
     shape_module_cfg:
-      target: third_party.Michelangelo.michelangelo.models.tsal.sal_perceiver.AlignedShapeLatentPerceiver
+      target: third_partys.Michelangelo.michelangelo.models.tsal.sal_perceiver.AlignedShapeLatentPerceiver
       params:
         num_latents: 256
         embed_dim: 64
@@ -18,12 +18,12 @@ model:
         qkv_bias: false
         use_checkpoint: true
     aligned_module_cfg:
-      target: third_party.Michelangelo.michelangelo.models.tsal.clip_asl_module.CLIPAlignedShapeAsLatentModule
+      target: third_partys.Michelangelo.michelangelo.models.tsal.clip_asl_module.CLIPAlignedShapeAsLatentModule
       params:
         clip_model_version: "./checkpoints/clip/clip-vit-large-patch14"
 
     loss_cfg:
-      target: third_party.Michelangelo.michelangelo.models.tsal.loss.ContrastKLNearFar
+      target: third_partys.Michelangelo.michelangelo.models.tsal.loss.ContrastKLNearFar
       params:
         contrast_weight: 0.1
         near_weight: 0.1
@@ -38,7 +38,7 @@ model:
           weight_decay: 1.e-2
 
       scheduler:
-        target: third_party.Michelangelo.michelangelo.utils.trainings.lr_scheduler.LambdaWarmUpCosineFactorScheduler
+        target: third_partys.Michelangelo.michelangelo.utils.trainings.lr_scheduler.LambdaWarmUpCosineFactorScheduler
         params:
           warm_up_steps: 5000
           f_start: 1.e-6
